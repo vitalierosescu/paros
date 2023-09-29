@@ -129,7 +129,11 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  horizontalScrollSection();
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 768) {
+      horizontalScrollSection();
+    }
+  });
 
   const videoScrollSection = () => {
     // VIDEO SCROLL PLUGINS

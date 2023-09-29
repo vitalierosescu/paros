@@ -5,7 +5,7 @@ import { Flip } from 'gsap/Flip';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import $ from 'jquery';
 import Swiper from 'swiper';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 
 // import { addBgEffect } from '$utils/bg-effect.js';
 import { addImgHoverEffect } from '$utils/image-hover';
@@ -189,12 +189,12 @@ window.addEventListener('DOMContentLoaded', () => {
       if ($(this).attr('loop-mode') === 'true') {
         loopMode = true;
       }
-      let sliderDuration = 500;
+      let sliderDuration = 1000;
       if ($(this).attr('slider-duration') !== undefined) {
         sliderDuration = +$(this).attr('slider-duration');
       }
       new Swiper($(this).find('.swiper')[0], {
-        modules: [Navigation, Pagination],
+        modules: [Navigation, Pagination, Autoplay],
         speed: sliderDuration,
         loop: loopMode,
         autoHeight: false,
@@ -206,7 +206,8 @@ window.addEventListener('DOMContentLoaded', () => {
         spaceBetween: '4%',
         rewind: false,
         autoplay: {
-          delay: 1000,
+          delay: 3000,
+          disableOnInteraction: false,
         },
         mousewheel: {
           forceToAxis: true,

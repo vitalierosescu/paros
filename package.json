@@ -20,7 +20,7 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "files": [
-    "dist"
+    "public"
   ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development node ./bin/build.js",

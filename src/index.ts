@@ -7,40 +7,34 @@ import $ from 'jquery';
 import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 
-// import { addBgEffect } from '$utils/bg-effect.js';
 import { addImgHoverEffect } from '$utils/image-hover';
 import { matterContact } from '$utils/matter.js';
-matterContact();
-// addBgEffect();
-
-gsap.registerPlugin(ScrollTrigger, Flip);
 
 window.addEventListener('DOMContentLoaded', () => {
-  gsap.to('.load_grid-item', {
-    opacity: 0,
-    duration: 0.001,
-    delay: 0.2,
-    stagger: { amount: 0.4, from: 'random' },
-    onComplete: () => {
-      gsap.set('.load_grid', { display: 'none' });
-      const navbar = document.querySelector('.navbar') as HTMLElement;
-      navbar.style.zIndex = '1000';
-    },
-  });
+  // register GSAP Plugins
+  gsap.registerPlugin(Flip, ScrollTrigger);
 
-  if (document.querySelector('.slider-projects_img-height')) {
-    addImgHoverEffect();
+  matterContact();
+  if (document.querySelector('.load_grid-item')) {
+    gsap.to('.load_grid-item', {
+      opacity: 0,
+      duration: 0.001,
+      delay: 0.2,
+      stagger: { amount: 0.4, from: 'random' },
+      onComplete: () => {
+        gsap.set('.load_grid', { display: 'none' });
+        const navbar = document.querySelector('.navbar') as HTMLElement;
+        navbar.style.zIndex = '1000';
+      },
+    });
   }
-  // let's store the currentpage into a global variable
-  let currentPage: string;
 
   const updateCurrentNavLink = () => {
     // nav hover animation
     const navLinks = document.querySelectorAll('.nav-link');
     const currentNavLink = document.querySelector('.nav-link.w--current');
-    const currentLinkImg = document.querySelector('.nav-current_img') as HTMLImageElement;
+    const currentLinkImg = document.querySelector('.nav-current_img') as HTMLAnchorElement;
 
-    currentPage = window.location.pathname;
     currentNavLink?.appendChild(currentLinkImg);
 
     // hover animation
@@ -75,10 +69,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   updateCurrentNavLink();
 
+  addImgHoverEffect();
   //
   const horizontalScrollSection = () => {
     function setTrackHeights() {
-      $('.services').each(function (index: number) {
+      $('.services').each(function () {
         const trackWidth = $(this).find('.track').outerWidth();
         $(this).height(trackWidth * 2);
       });
@@ -128,6 +123,11 @@ window.addEventListener('DOMContentLoaded', () => {
       },
     });
   };
+
+  if (window.innerWidth > 768) {
+    horizontalScrollSection();
+    console.log(window.innerWidth);
+  }
 
   window.addEventListener('resize', function () {
     if (window.innerWidth > 768) {
@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  videoScrollSection();
+  // videoScrollSection();
 
   // Swiper Slider
   const projectsSlider = () => {
@@ -193,7 +193,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if ($(this).attr('loop-mode') === 'true') {
         loopMode = true;
       }
-      let sliderDuration = 1000;
+      let sliderDuration = 750;
       if ($(this).attr('slider-duration') !== undefined) {
         sliderDuration = +$(this).attr('slider-duration');
       }
@@ -210,7 +210,7 @@ window.addEventListener('DOMContentLoaded', () => {
         spaceBetween: '4%',
         rewind: false,
         autoplay: {
-          delay: 3000,
+          delay: 4000,
           disableOnInteraction: false,
         },
         mousewheel: {
@@ -233,7 +233,7 @@ window.addEventListener('DOMContentLoaded', () => {
           },
           // desktop
           992: {
-            slidesPerView: 2,
+            slidesPerView: 3,
             spaceBetween: '2%',
           },
         },
@@ -252,6 +252,15 @@ window.addEventListener('DOMContentLoaded', () => {
         slideActiveClass: 'is-active',
         slideDuplicateActiveClass: 'is-active',
       });
+
+      Array.from(document.querySelectorAll('.slider-projects_img-height')).forEach((img) => {
+        img.addEventListener('mouseenter', (e) => {
+          e.currentTarget?.querySelector('.slider-project_title').classList.add('show');
+        });
+        img.addEventListener('mouseleave', (e) => {
+          e.currentTarget?.querySelector('.slider-project_title').classList.remove('show');
+        });
+      });
     });
   };
 
@@ -267,8 +276,14 @@ window.addEventListener('DOMContentLoaded', () => {
         },
         enter() {
           enterTransition();
-          document.querySelectorAll('.nav-link').forEach((link) => link.classList.add('is-dark'));
-          document.querySelector('.nav_wrapper')?.classList.add('is-dark');
+          document.querySelectorAll('.nav-link').forEach((link) => {
+            if (!link.classList.contains('is-dark')) {
+              link.classList.add('is-dark');
+            }
+          });
+          if (!document.querySelector('.nav_wrapper')?.classList.contains('is-dark')) {
+            document.querySelector('.nav_wrapper')?.classList.add('is-dark');
+          }
         },
       },
       {
@@ -286,7 +301,6 @@ window.addEventListener('DOMContentLoaded', () => {
             .querySelectorAll('.nav-link')
             .forEach((link) => link.classList.remove('is-dark'));
           document.querySelector('.nav_wrapper')?.classList.remove('is-dark');
-          // await transitionHomePage(data);
         },
       },
     ],
@@ -336,9 +350,19 @@ window.addEventListener('DOMContentLoaded', () => {
   barba.hooks.after(async () => {
     await restartWebflow();
     projectsSlider();
-    videoScrollSection();
-    horizontalScrollSection();
+    // videoScrollSection();
+
+    if (window.innerWidth > 768) {
+      horizontalScrollSection();
+    }
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 768) {
+        horizontalScrollSection();
+      }
+    });
     matterContact();
     addImgHoverEffect();
+    window.scrollTo(0, 0);
   });
 });

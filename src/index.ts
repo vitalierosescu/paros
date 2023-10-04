@@ -8,14 +8,35 @@ import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 
 import { addImgHoverEffect } from '$utils/image-hover';
-import { matterContact } from '$utils/matter.js';
+import { updateCurrentNavLink } from '$utils/navigation';
+// import { matterContact, matterContact2 } from '$utils/matter.js';
+
+const pages = {
+  home: '/',
+  contact: '/contact',
+  projects: '/projecten',
+  about: '/over-ons',
+};
 
 window.addEventListener('DOMContentLoaded', () => {
+  let nextUrl: any;
   // register GSAP Plugins
   gsap.registerPlugin(Flip, ScrollTrigger);
 
-  matterContact();
-  if (document.querySelector('.load_grid-item')) {
+  const resetWebflow = (data) => {
+    const parser = new DOMParser();
+    const dom = parser.parseFromString(data.next.html, 'text/html');
+    const webflowPageId = $(dom).find('html').attr('data-wf-page');
+    $('html').attr('data-wf-page', webflowPageId);
+    window.Webflow && window.Webflow.destroy();
+    window.Webflow && window.Webflow.ready();
+    window.Webflow && window.Webflow.require('ix2').init();
+  };
+
+  updateCurrentNavLink();
+
+  // matterContact2();
+  if (document.querySelector('.load_grid')) {
     gsap.to('.load_grid-item', {
       opacity: 0,
       duration: 0.001,
@@ -29,104 +50,89 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const updateCurrentNavLink = () => {
-    // nav hover animation
-    const navLinks = document.querySelectorAll('.nav-link');
-    const currentNavLink = document.querySelector('.nav-link.w--current');
-    const currentLinkImg = document.querySelector('.nav-current_img') as HTMLAnchorElement;
-
-    currentNavLink?.appendChild(currentLinkImg);
-
-    // hover animation
-    navLinks.forEach((link) => {
-      link.addEventListener('click', (e) => {
-        navLinks.forEach((link) => {
-          link.classList.remove('w--current');
-        });
-        (e.currentTarget as HTMLElement).classList.add('w--current');
-      });
-
-      link.addEventListener('mouseenter', (e) => {
-        const state = Flip.getState(currentLinkImg);
-        (e.currentTarget as HTMLElement).appendChild(currentLinkImg);
-        Flip.from(state, {
-          duration: 1,
-          ease: 'elastic.out(0.3, 0.2)',
+  const loadImages = () => {
+    const imagesToLoad = gsap.utils.toArray('.load_img');
+    imagesToLoad &&
+      imagesToLoad.forEach((img, i) => {
+        gsap.to(img.querySelectorAll('.load_img-item'), {
+          opacity: 0,
+          duration: 0.1,
+          delay: 0.1,
+          stagger: { amount: 0.6, from: 'random' },
+          scrollTrigger: {
+            trigger: img,
+            start: 'center bottom',
+            end: 'center top',
+          },
+          onComplete: () => {
+            gsap.set(img, { display: 'none' });
+          },
         });
       });
-
-      link.addEventListener('mouseleave', (e) => {
-        const state = Flip.getState(currentLinkImg);
-        const activeLink = document.querySelector('.nav-link.w--current');
-        activeLink?.appendChild(currentLinkImg);
-        Flip.from(state, {
-          duration: 0.7,
-          ease: 'elastic.out(0.3, 0.2)',
-        });
-      });
-    });
   };
+  loadImages();
 
-  updateCurrentNavLink();
+  // updateCurrentNavLink();
 
   addImgHoverEffect();
   //
   const horizontalScrollSection = () => {
-    function setTrackHeights() {
-      $('.services').each(function () {
-        const trackWidth = $(this).find('.track').outerWidth();
-        $(this).height(trackWidth * 2);
-      });
-    }
-    setTrackHeights();
-    window.addEventListener('resize', function () {
+    if (document.querySelector('.track')) {
+      const setTrackHeights = () => {
+        $('.services').each(function () {
+          const trackWidth = $(this).find('.track').outerWidth();
+          $(this).height(trackWidth * 2);
+        });
+      };
       setTrackHeights();
-    });
-
-    // Horizontal scroll
-    const tlMain = gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: '.services',
-          start: 'top top',
-          end: '95% bottom',
-          scrub: 1,
-        },
-      })
-      .to('.track', {
-        xPercent: -100,
-        ease: 'none',
+      window.addEventListener('resize', function () {
+        setTrackHeights();
       });
 
-    // hero photo
-    gsap
-      .timeline({
+      // Horizontal scroll
+      const tlMain = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: '.services',
+            start: 'top top',
+            end: '95% bottom',
+            scrub: 1,
+          },
+        })
+        .to('.track', {
+          xPercent: -100,
+          ease: 'none',
+        });
+
+      // hero photo
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: '.s_new',
+            containerAnimation: tlMain,
+            start: 'left left',
+            end: 'right left',
+            scrub: true,
+          },
+        })
+        .from('.s_img', { scale: 1.2 }, 0);
+
+      gsap.to('.s_progress-active', {
+        width: '100%',
+        ease: 'none',
         scrollTrigger: {
-          trigger: '.s_new',
+          trigger: '.track-flex',
           containerAnimation: tlMain,
-          start: 'left left',
-          end: 'right left',
+          start: 'center 90%',
+          end: 'center -10%',
           scrub: true,
         },
-      })
-      .from('.s_img', { scale: 1 }, 0);
-
-    gsap.to('.s_progress-active', {
-      width: '100%',
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.track-flex',
-        containerAnimation: tlMain,
-        start: 'center 90%',
-        end: 'center -10%',
-        scrub: true,
-      },
-    });
+      });
+    }
   };
 
   if (window.innerWidth > 768) {
     horizontalScrollSection();
-    console.log(window.innerWidth);
   }
 
   window.addEventListener('resize', function () {
@@ -271,11 +277,16 @@ window.addEventListener('DOMContentLoaded', () => {
     transitions: [
       {
         name: 'page-transition',
+        beforeLeave(data) {
+          nextUrl = data.next.url.path;
+          console.log(nextUrl);
+          updateCurrentNavLink(nextUrl);
+        },
         async leave() {
           await leaveTransition();
         },
-        enter() {
-          enterTransition();
+        enter(data) {
+          enterTransition(data);
           document.querySelectorAll('.nav-link').forEach((link) => {
             if (!link.classList.contains('is-dark')) {
               link.classList.add('is-dark');
@@ -291,12 +302,16 @@ window.addEventListener('DOMContentLoaded', () => {
         to: {
           namespace: ['home'],
         },
-
+        beforeLeave(data) {
+          nextUrl = data.next.url.path;
+          console.log(nextUrl);
+          updateCurrentNavLink(nextUrl);
+        },
         async leave() {
           await leaveTransition();
         },
-        enter() {
-          enterTransition();
+        enter(data) {
+          enterTransition(data);
           document
             .querySelectorAll('.nav-link')
             .forEach((link) => link.classList.remove('is-dark'));
@@ -317,16 +332,29 @@ window.addEventListener('DOMContentLoaded', () => {
           console.log('about namespace');
         },
       },
+      {
+        namespace: 'contact',
+        afterEnter() {
+          console.log('contact namespace');
+        },
+      },
+      {
+        namespace: 'projects',
+        afterEnter() {
+          console.log('projects namespace');
+        },
+      },
     ],
   });
 
-  const enterTransition = () => {
+  const enterTransition = (data) => {
     gsap.to('.load_grid-item', {
       opacity: 0,
       duration: 0.001,
       stagger: { amount: 0.5, from: 'random' },
       onComplete: () => {
         gsap.set('.load_grid', { display: 'none' });
+        resetWebflow(data);
       },
     });
   };
@@ -347,11 +375,13 @@ window.addEventListener('DOMContentLoaded', () => {
     );
   };
 
-  barba.hooks.after(async () => {
-    await restartWebflow();
+  barba.hooks.after(() => {
+    restartWebflow();
+    loadImages();
+    window.scrollTo(0, 0);
     projectsSlider();
-    // videoScrollSection();
 
+    addImgHoverEffect();
     if (window.innerWidth > 768) {
       horizontalScrollSection();
     }
@@ -361,8 +391,5 @@ window.addEventListener('DOMContentLoaded', () => {
         horizontalScrollSection();
       }
     });
-    matterContact();
-    addImgHoverEffect();
-    window.scrollTo(0, 0);
   });
 });

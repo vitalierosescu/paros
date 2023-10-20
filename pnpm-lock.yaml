@@ -11,12 +11,24 @@ dependencies:
   '@finsweet/ts-utils':
     specifier: ^0.39.2
     version: 0.39.2
+  '@studio-freight/lenis':
+    specifier: ^1.0.27
+    version: 1.0.27
   gsap:
     specifier: ^3.12.2
     version: 3.12.2
   jquery:
     specifier: ^3.7.1
     version: 3.7.1
+  jquery-mask-plugin:
+    specifier: ^1.14.16
+    version: 1.14.16
+  jquery-nice-select:
+    specifier: ^1.1.0
+    version: 1.1.0
+  jquery-validation:
+    specifier: ^1.19.5
+    version: 1.19.5(jquery@3.7.1)
   matter-js:
     specifier: ^0.19.0
     version: 0.19.0
@@ -638,6 +650,10 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /@studio-freight/lenis@1.0.27:
+    resolution: {integrity: sha512-1I6EaWR9rxdFjIJtF52CtETJt9ngfY4AjawrJY5pLxCvHa/lQZ+1v2gTUntwNZkuks6E2It6YEXV6jnpnCZFjA==}
+    dev: false
 
   /@types/is-ci@3.0.0:
     resolution: {integrity: sha512-Q0Op0hdWbYd1iahB+IFNQcWXFq4O0Q5MwQP7uN0souuQ4rPg1vEYcnIOfr1gY+M+6rc8FGoRaBO1mOOvL29sEQ==}
@@ -1914,6 +1930,28 @@ packages:
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
+
+  /jquery-mask-plugin@1.14.16:
+    resolution: {integrity: sha512-reywdHlYEkPbzWjTpcc1fk9XQ3PLvO5dzEAVqy8zI7NTF22tB1HbeU3iboZTLdkBEPaWAqeI2HtEjsGQ4roZKw==}
+    dev: false
+
+  /jquery-nice-select@1.1.0:
+    resolution: {integrity: sha512-4H+MMamBCyoXVC58aBgotnFpvZUSz6m78F3W/+df8iNSpK+rb8Q3nGL/1rxuU3XXUS4ThiQLZMIYiGupaa+u7w==}
+    dependencies:
+      jquery: 2.2.4
+    dev: false
+
+  /jquery-validation@1.19.5(jquery@3.7.1):
+    resolution: {integrity: sha512-X2SmnPq1mRiDecVYL8edWx+yTBZDyC8ohWXFhXdtqFHgU9Wd4KHkvcbCoIZ0JaSaumzS8s2gXSkP8F7ivg/8ZQ==}
+    peerDependencies:
+      jquery: ^1.7 || ^2.0 || ^3.1
+    dependencies:
+      jquery: 3.7.1
+    dev: false
+
+  /jquery@2.2.4:
+    resolution: {integrity: sha512-lBHj60ezci2u1v2FqnZIraShGgEXq35qCzMv4lITyHGppTnA13rwR0MgwyNJh9TnDs3aXUvd1xjAotfraMHX/Q==}
+    dev: false
 
   /jquery@3.7.1:
     resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}

@@ -54,8 +54,12 @@
   "dependencies": {
     "@barba/core": "^2.9.7",
     "@finsweet/ts-utils": "^0.39.2",
+    "@studio-freight/lenis": "^1.0.27",
     "gsap": "^3.12.2",
     "jquery": "^3.7.1",
+    "jquery-mask-plugin": "^1.14.16",
+    "jquery-nice-select": "^1.1.0",
+    "jquery-validation": "^1.19.5",
     "matter-js": "^0.19.0",
     "p5": "^1.7.0",
     "poly-decomp": "^0.3.0",

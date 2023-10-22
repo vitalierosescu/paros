@@ -1,11 +1,13 @@
+import * as p5 from 'p5';
+
 export const addBgEffect = () => {
   // CONSTANTS
-  const CELL_SIZE = 30; // size of each cell in the grid
+  const CELL_SIZE = 25; // size of each cell in the grid
   const COLOR_R = 226;
   const COLOR_G = 45;
   const COLOR_B = 54;
   const STARTING_ALPHA = 20;
-  const BACKGROUND_COLOR = 255;
+  const BACKGROUND_COLOR = 240;
   const PROB_OF_NEIGHBOR = 0.4;
   const AMT_FADE_PER_FRAME = 5;
 
@@ -22,6 +24,7 @@ export const addBgEffect = () => {
     cnv.style('position', 'fixed');
     cnv.style('inset', 0);
     cnv.style('z-index', -1);
+    cnv.style('opacity', 0.5);
     colorWithAlpha = color(COLOR_R, COLOR_G, COLOR_B, STARTING_ALPHA);
     noFill();
     stroke(colorWithAlpha);
@@ -31,7 +34,7 @@ export const addBgEffect = () => {
   }
 
   function draw() {
-    background(BACKGROUND_COLOR);
+    background(color(BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR));
 
     // Calculate the row and column of the cell that the mouse is currently over
     let row = floor(mouseY / CELL_SIZE);

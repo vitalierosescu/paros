@@ -14,9 +14,9 @@ const contact = () => {
     }
   });
 
-  // Learn more at https://jqueryvalidation.org/
-  // Options at https://jqueryvalidation.org/validate/
-  // Methods at https://jqueryvalidation.org/category/methods/
+  /**
+   * Form Validation
+   */
   $('#contact-form').validate({
     rules: {
       projectPriority: {
@@ -36,15 +36,28 @@ const contact = () => {
       name: 'Laat uw naam achter, zo maken we het persoonlijker.',
       email: 'Gelieve uw email in te vullen.',
       phone: 'Graag uw telefoonnummer achterlaten voor vlotte communicatie.',
+      message: 'Laat een opmerking achter.',
     },
   });
 
-  //Mascara para campos
+  /**
+   * Format the phone number while typing
+   */
   $(() => {
-    $('.phone').mask('(00) 00000-0000');
+    var options = {
+      onKeyPress: function (cep, e, field, options) {
+        var masks = ['000 00 00 00 00', '000 000 00 000'];
+        var mask = e.currentTarget.value.length > 13 ? masks[0] : masks[1];
+        $('.phone').mask(mask, options);
+      },
+    };
+
+    $('.phone').mask('000', options);
   });
 
-  //Nice Select
+  /**
+   * Nicely styled select field
+   */
   $(() => {
     if ($('select')) {
       $('select').niceSelect();
@@ -56,15 +69,13 @@ const contact = () => {
       $('html,body').animate({ scrollTop: 0 }, 1000);
     });
 
-    // when the form is submitted
+    /**
+     * Submit form
+     */
     $('form').submit(() => {
-      // wait 1000ms (so we have time to see the success wrapper show)
       setTimeout(() => {
-        // click our .form-success-trigger
-        // this class has an Interaction on it that runs our Lottie icon animation
         $('.form_sucess_trigger').click();
       }, 1000);
-      // NICE!!!!!!!!
     });
   });
 };

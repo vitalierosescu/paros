@@ -6,6 +6,7 @@ import { Flip } from 'gsap/Flip';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import $ from 'jquery';
 
+import { addBgEffect } from '$utils/components/bg-effect';
 import { addImgHoverEffect } from '$utils/components/image-hover';
 import { matterContact3 } from '$utils/components/matter.js';
 import { updateCurrentNavLink } from '$utils/components/navigation';
@@ -21,6 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   homeScroll();
   updateCurrentNavLink();
+  addBgEffect();
 
   /**
    * Mobile Nav
@@ -178,6 +180,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const horizontalScrollSection = () => {
     if (document.querySelector('.track')) {
+      console.log(document.querySelector('.track'));
       const mm = gsap.matchMedia();
 
       mm.add('(min-width:767px)', () => {

@@ -27,7 +27,6 @@ export const homeScroll = () => {
   /**
    * Header Animation + scroll
    */
-
   const heroImg = document.querySelector('.hero_img');
 
   heroImg &&

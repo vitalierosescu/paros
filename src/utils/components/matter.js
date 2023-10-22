@@ -1,6 +1,5 @@
 // import { Engine,Render,Events,MouseConstraint,World,Bodies } from 'matter-js';
 import Matter from 'matter-js';
-import { polyDecomp } from 'poly-decomp';
 
 export const matterContact3 = () => {
   const initSimulation = () => {
@@ -29,12 +28,6 @@ export const matterContact3 = () => {
         showAngleIndicator: false,
       },
     });
-
-    // const radius = '20';
-
-    // create two boxes and a ground
-    var boxA = Bodies.rectangle(400, 200, 80, 80);
-    var boxB = Bodies.rectangle(450, 50, 80, 80);
 
     var block1 = Bodies.rectangle(matterContainer.clientWidth / 2 - 59, 90, 214, 57, {
       render: {

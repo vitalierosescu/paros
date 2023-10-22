@@ -1,13 +1,9 @@
-/*  jQuery Nice Select - v1.1.0
-    https://github.com/hernansartorio/jquery-nice-select
-    Made by Hernán Sartorio  */
-
 import $ from 'jquery';
 
 $.fn.niceSelect = function (method) {
   // Methods
   if (typeof method === 'string') {
-    if (method == 'update') {
+    if (method === 'update') {
       this.each(function () {
         var $select = $(this);
         var $dropdown = $(this).next('.nice-select');
@@ -22,7 +18,7 @@ $.fn.niceSelect = function (method) {
           }
         }
       });
-    } else if (method == 'destroy') {
+    } else if (method === 'destroy') {
       this.each(function () {
         var $select = $(this);
         var $dropdown = $(this).next('.nice-select');
@@ -32,7 +28,7 @@ $.fn.niceSelect = function (method) {
           $select.css('display', '');
         }
       });
-      if ($('.nice-select').length == 0) {
+      if ($('.nice-select').length === 0) {
         $(document).off('.nice_select');
       }
     } else {
@@ -135,7 +131,7 @@ $.fn.niceSelect = function (method) {
     var $focused_option = $($dropdown.find('.focus') || $dropdown.find('.list .option.selected'));
 
     // Space or Enter
-    if (event.keyCode == 32 || event.keyCode == 13) {
+    if (event.keyCode === 32 || event.keyCode === 13) {
       if ($dropdown.hasClass('open')) {
         $focused_option.trigger('click');
       } else {
@@ -144,7 +140,7 @@ $.fn.niceSelect = function (method) {
       return false;
       // Down
     }
-    if (event.keyCode == 40) {
+    if (event.keyCode === 40) {
       if (!$dropdown.hasClass('open')) {
         $dropdown.trigger('click');
       } else {
@@ -157,7 +153,7 @@ $.fn.niceSelect = function (method) {
       return false;
       // Up
     }
-    if (event.keyCode == 38) {
+    if (event.keyCode === 38) {
       if (!$dropdown.hasClass('open')) {
         $dropdown.trigger('click');
       } else {
@@ -170,12 +166,12 @@ $.fn.niceSelect = function (method) {
       return false;
       // Esc
     }
-    if (event.keyCode == 27) {
+    if (event.keyCode === 27) {
       if ($dropdown.hasClass('open')) {
         $dropdown.trigger('click');
       }
       // Tab
-    } else if (event.keyCode == 9) {
+    } else if (event.keyCode === 9) {
       if ($dropdown.hasClass('open')) {
         return false;
       }

@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 export const addImgHoverEffect = () => {
   const addHoverEffect = (imgParent) => {
     const mm = gsap.matchMedia();
-    mm.add('(min-width:991px)', () => {
+    mm.add('(min-width:768px)', () => {
       gsap.utils.toArray(imgParent).forEach((imgWrapper) => {
         const notchSize = '1.5vw';
 

@@ -1,7 +1,7 @@
 // import { Engine,Render,Events,MouseConstraint,World,Bodies } from 'matter-js';
 import Matter from 'matter-js';
 
-export const matterContact3 = () => {
+export const matterContact = () => {
   const initSimulation = () => {
     const matterContainer = document.querySelector('.tag-canvas');
     const THICCNESS = 60;
@@ -187,7 +187,7 @@ export const matterContact3 = () => {
       });
     },
     {
-      rootMargin: '0px',
+      rootMargin: '200px',
       threshold: 0.5,
     }
   );

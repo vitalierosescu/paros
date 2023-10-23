@@ -8,11 +8,11 @@ import $ from 'jquery';
 
 import { addBgEffect } from '$utils/components/bg-effect';
 import { addImgHoverEffect } from '$utils/components/image-hover';
-import { matterContact3 } from '$utils/components/matter.js';
+import { matterContact } from '$utils/components/matter.js';
 import { updateCurrentNavLink } from '$utils/components/navigation';
 import projectsSlider from '$utils/components/projects-slider';
 import contact from '$utils/pages/contact';
-import { homeScroll } from '$utils/pages/home-scroll';
+import { homeScroll, horizontalScrollSection } from '$utils/pages/home-scroll';
 import { enterTransition, leaveTransition } from '$utils/transitions/index';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -124,7 +124,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const startLenisScroll = (resize?: boolean) => {
     if (resize === true && lenis != null) {
       lenis.destroy();
-      console.log('destroyed');
       lenis = new Lenis({
         duration: 0.5,
         easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
@@ -172,73 +171,11 @@ window.addEventListener('DOMContentLoaded', () => {
   // updateCurrentNavLink();
 
   if (document.querySelector('.tag-canvas')) {
-    matterContact3();
+    matterContact();
   }
 
   addImgHoverEffect();
   //
-
-  const horizontalScrollSection = () => {
-    if (document.querySelector('.track')) {
-      console.log(document.querySelector('.track'));
-      const mm = gsap.matchMedia();
-
-      mm.add('(min-width:767px)', () => {
-        const setTrackHeights = () => {
-          $('.services').each(function () {
-            const trackWidth = $(this).find('.track').outerWidth();
-            $(this).height(trackWidth * 2);
-          });
-        };
-        setTrackHeights();
-        window.addEventListener('resize', function () {
-          setTrackHeights();
-        });
-
-        // Horizontal scroll
-        const tlMain = gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: '.services',
-              start: 'top top',
-              end: '95% bottom',
-              scrub: 1,
-            },
-          })
-          .to('.track', {
-            xPercent: -100,
-            ease: 'none',
-          });
-
-        // hero photo
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: '.s_new',
-              containerAnimation: tlMain,
-              start: 'left left',
-              end: '300% left',
-              scrub: true,
-            },
-          })
-          .from('.s_img', { scale: 1.2 }, 0);
-
-        gsap.to('.s_progress-active', {
-          width: '100%',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '.track-flex',
-            containerAnimation: tlMain,
-            start: 'center 90%',
-            end: 'center -10%',
-            scrub: true,
-          },
-        });
-      });
-    }
-  };
-
-  horizontalScrollSection();
 
   const videoScrollSection = () => {
     // VIDEO SCROLL PLUGINS
@@ -289,8 +226,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // videoScrollSection();
-
   projectsSlider();
 
   barba.init({
@@ -317,7 +252,7 @@ window.addEventListener('DOMContentLoaded', () => {
         beforeLeave(data) {
           nextUrl = data.next.url.path;
           updateCurrentNavLink(nextUrl);
-          burgerTl.reverse();
+          burgerTl.timeScale(1.8).reverse();
         },
         async leave() {
           await leaveTransition();
@@ -330,6 +265,9 @@ window.addEventListener('DOMContentLoaded', () => {
     views: [
       {
         namespace: 'home',
+        beforeEnter() {
+          horizontalScrollSection();
+        },
       },
       {
         namespace: 'about',
@@ -356,8 +294,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadImages();
     projectsSlider();
     addImgHoverEffect();
-    horizontalScrollSection();
     homeScroll();
-    matterContact3();
+    matterContact();
   });
 });

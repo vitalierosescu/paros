@@ -56,7 +56,7 @@ const projectsSlider = () => {
         el: $(this).find('.swiper-bullet-wrapper')[0],
         bulletActiveClass: 'is-active',
         bulletClass: 'swiper-bullet',
-        bulletElement: 'button',
+        bulletElement: 'div',
         clickable: true,
       },
       navigation: {

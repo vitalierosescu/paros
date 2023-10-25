@@ -26,7 +26,7 @@ export const homeScroll = () => {
     });
 
   /**
-   * Header Animation + scroll
+   * Hero Animation + scroll
    */
   const heroImg = document.querySelector('.hero_img');
 
@@ -34,16 +34,18 @@ export const homeScroll = () => {
     gsap.to(heroImg, {
       scale: 1.2,
       duration: 1,
-      onComplete: () => {
-        gsap.to(heroImg, {
-          yPercent: 20,
-          scrollTrigger: {
-            trigger: heroImg.parentElement,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-          },
-        });
+    });
+
+  heroImg &&
+    gsap.to(heroImg, {
+      yPercent: 20,
+      duration: 1,
+      scrollTrigger: {
+        trigger: heroImg,
+        start: 'top +=100px',
+        end: 'bottom top',
+        scrub: true,
+        immediateRender: false,
       },
     });
 
@@ -96,6 +98,12 @@ export const horizontalScrollSection = () => {
       });
       window.addEventListener('resize', context.onResize);
 
+      const service1 = document.querySelector('.s_new');
+      const service2 = document.querySelector('.s_renovation');
+      const service3 = document.querySelector('.s_metal');
+
+      const numberParalax = '-10%';
+
       // Horizontal scroll
       const tlMain = gsap
         .timeline({
@@ -114,19 +122,29 @@ export const horizontalScrollSection = () => {
       /**
        * Animation 1
        */
+      gsap.set(service1.querySelector('.s_img'), {
+        clipPath: 'polygon(0% 0, 100% 0, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0 100%, 0 0%)',
+      });
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: '.s_new',
+            trigger: service1,
             containerAnimation: tlMain,
             start: 'left left',
             end: 'right left',
             scrub: true,
           },
         })
-        .to('.s_new .s_img', {
-          borderTopRightRadius: '240px',
-        });
+        .to(service1.querySelector('.s_img'), {
+          clipPath: 'polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%)',
+        })
+        .to(
+          service1.querySelector('.s_number'),
+          {
+            x: numberParalax,
+          },
+          '<'
+        );
 
       /**
        * Animation 2
@@ -134,19 +152,23 @@ export const horizontalScrollSection = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: '.s_renovation',
+            trigger: service2,
             containerAnimation: tlMain,
             start: '-50% left',
             end: 'right left',
             scrub: true,
           },
         })
-        .to('.s_renovation .s_img', {
-          borderTopLeftRadius: '240px',
+        .to(service2.querySelector('.s_img'), {
+          borderTopRightRadius: '300px',
         })
-        .to('.s_renovation .s_number', {
-          x: '-50px',
-        });
+        .to(
+          service2.querySelector('.s_number'),
+          {
+            x: numberParalax,
+          },
+          '<'
+        );
 
       /**
        * Animation 3
@@ -157,18 +179,25 @@ export const horizontalScrollSection = () => {
             trigger: '.s_metal',
             containerAnimation: tlMain,
             start: '-100% left',
-            end: 'right left',
+            end: 'right 60%',
             scrub: true,
           },
         })
         .fromTo(
           '.s_metal .s_img',
           {
-            borderRadius: '0 0 0 240px',
+            borderRadius: '0 0 0 0',
           },
           {
             borderRadius: '240px 0 0 0',
           }
+        )
+        .to(
+          service3.querySelector('.s_number'),
+          {
+            x: numberParalax,
+          },
+          '<'
         );
 
       gsap
@@ -190,7 +219,6 @@ export const horizontalScrollSection = () => {
        * Remove window resize eventlistener
        */
       return () => {
-        console.log('reverted');
         window.removeEventListener('resize', context.onResize);
         if (document.querySelector('.services')) {
           document.querySelector('.services').style.height = 'auto';

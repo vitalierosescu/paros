@@ -181,6 +181,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // VIDEO SCROLL PLUGINS
 
     // ScrollTrigger.normalizeScroll(true);
+    console.log('yuh');
     // SETUP ELEMENTS
     const zoneEl = $("[js-scrollflip-element='zone']"),
       targetEl = $("[js-scrollflip-element='target']").first();
@@ -267,19 +268,27 @@ window.addEventListener('DOMContentLoaded', () => {
         namespace: 'home',
         beforeEnter() {
           horizontalScrollSection();
+          videoScrollSection();
         },
       },
       {
         namespace: 'about',
+        beforeEnter(data) {
+          enterTransition(data, this.name);
+        },
       },
       {
         namespace: 'contact',
-        beforeEnter() {
+        beforeEnter(data) {
           contact();
+          enterTransition(data, this.name);
         },
       },
       {
         namespace: 'projects',
+        beforeEnter(data) {
+          enterTransition(data, this.name);
+        },
       },
     ],
   });

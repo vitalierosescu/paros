@@ -45296,7 +45296,7 @@
           el: $(this).find(".swiper-bullet-wrapper")[0],
           bulletActiveClass: "is-active",
           bulletClass: "swiper-bullet",
-          bulletElement: "button",
+          bulletElement: "div",
           clickable: true
         },
         navigation: {
@@ -45866,23 +45866,23 @@
       });
     }
     let lenis = new r({
-      duration: 0.5,
-      easing: (t2) => t2 === 1 ? 1 : 1 - Math.pow(2, -10 * t2),
-      smooth: true,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      lerp: 0.3
+      lerp: 0.3,
+      wheelMultiplier: 1,
+      infinite: false,
+      gestureOrientation: "vertical",
+      normalizeWheel: false,
+      smoothTouch: false
     });
     const startLenisScroll = (resize) => {
       if (resize === true && lenis != null) {
         lenis.destroy();
         lenis = new r({
-          duration: 0.5,
-          easing: (t2) => t2 === 1 ? 1 : 1 - Math.pow(2, -10 * t2),
-          smooth: true,
-          smoothTouch: false,
-          touchMultiplier: 2,
-          lerp: 0.3
+          lerp: 0.3,
+          wheelMultiplier: 1,
+          infinite: false,
+          gestureOrientation: "vertical",
+          normalizeWheel: false,
+          smoothTouch: false
         });
         lenis.start();
         lenis.resize();
@@ -45919,7 +45919,6 @@
     }
     addImgHoverEffect();
     const videoScrollSection = () => {
-      console.log("yuh");
       const zoneEl = (0, import_jquery5.default)("[js-scrollflip-element='zone']"), targetEl = (0, import_jquery5.default)("[js-scrollflip-element='target']").first();
       let tl;
       function createTimeline() {
@@ -46027,6 +46026,13 @@
     import_core.default.hooks.leave(() => {
       burgerAnimation("reverse");
     });
+    function connectToScrollTrigger() {
+      lenis.on("scroll", ScrollTrigger2.update);
+      gsapWithCSS.ticker.add((time) => {
+        lenis.raf(time * 1e3);
+      });
+    }
+    connectToScrollTrigger();
     import_core.default.hooks.after(() => {
       restartWebflow();
       startLenisScroll(true);

@@ -113,24 +113,24 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   let lenis = new Lenis({
-    duration: 0.5,
-    easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-    smooth: true,
-    smoothTouch: false,
-    touchMultiplier: 2,
     lerp: 0.3,
+    wheelMultiplier: 1.0,
+    infinite: false,
+    gestureOrientation: 'vertical',
+    normalizeWheel: false,
+    smoothTouch: false,
   });
 
   const startLenisScroll = (resize?: boolean) => {
     if (resize === true && lenis != null) {
       lenis.destroy();
       lenis = new Lenis({
-        duration: 0.5,
-        easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-        smooth: true,
-        smoothTouch: false,
-        touchMultiplier: 2,
         lerp: 0.3,
+        wheelMultiplier: 1.0,
+        infinite: false,
+        gestureOrientation: 'vertical',
+        normalizeWheel: false,
+        smoothTouch: false,
       });
       lenis.start();
       lenis.resize();
@@ -181,7 +181,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // VIDEO SCROLL PLUGINS
 
     // ScrollTrigger.normalizeScroll(true);
-    console.log('yuh');
     // SETUP ELEMENTS
     const zoneEl = $("[js-scrollflip-element='zone']"),
       targetEl = $("[js-scrollflip-element='target']").first();
@@ -296,6 +295,15 @@ window.addEventListener('DOMContentLoaded', () => {
   barba.hooks.leave(() => {
     burgerAnimation('reverse');
   });
+
+  function connectToScrollTrigger() {
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+  }
+
+  connectToScrollTrigger();
 
   barba.hooks.after(() => {
     restartWebflow();

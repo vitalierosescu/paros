@@ -15,6 +15,8 @@ import contact from '$utils/pages/contact';
 import { homeScroll, horizontalScrollSection } from '$utils/pages/home-scroll';
 import { enterTransition, leaveTransition } from '$utils/transitions/index';
 
+('use strict'); // fix lenis in safari
+
 window.addEventListener('DOMContentLoaded', () => {
   let nextUrl: any;
   // register GSAP Plugins
